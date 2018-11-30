@@ -1,22 +1,35 @@
 /*
-YOUR NAME HERE
-ECE 154A - Fall 2012
-Lab 2 - Mystery Caches
-Due: 12/3/12, 11:00 pm
+Rick Franc
+ECE 154A - Fall 2018
+Lab 6 - Mystery Caches
+Due: 12/7/18, 11:00 pm
 
 Mystery Cache Geometries:
+
+Cache size: 4194304 bytes
+Cache associativity: 16
+Cache block size: 64 bytes
+gcc -Wall cache-test-skel.c mystery1.o -o cache-test -m32
+Cache size: 4096 bytes
+Cache associativity: 1
+Cache block size: 4 bytes
+gcc -Wall cache-test-skel.c mystery2.o -o cache-test -m32
+Cache size: 4096 bytes
+Cache associativity: 128
+Cache block size: 32 bytes
+
 mystery0:
-    block size = 
-    cache size = 
-    associativity = 
+    block size = 64 bytes 
+    cache size = 4194304 bytes
+    associativity = 16
 mystery1:
-    block size = 
-    cache size = 
-    associativity = 
+    block size = 4 bytes
+    cache size = 4096 bytes
+    associativity = 1
 mystery2:
-    block size = 
-    cache size = 
-    associativity = 
+    block size = 32 bytes
+    cache size = 4096 bytes
+    associativity = 128
 */
 
 #include <stdlib.h>
@@ -28,25 +41,46 @@ mystery2:
    Returns the size (in B) of the cache
 */
 int get_cache_size(int block_size) {
-  /* YOUR CODE GOES HERE */
-  
-  return -1;
+  access_cache(0);
+  addr_t max_index = 1;
+  while(1){
+    for(addr_t i = 0; i <= max_index; i++){
+      access_cache(i*block_size);
+    }
+    if(access_cache(0) == FALSE){
+      return max_index*block_size;
+    }
+    max_index++;
+  }
 }
 
 /*
    Returns the associativity of the cache
 */
 int get_cache_assoc(int size) {
-  /* YOUR CODE GOES HERE */
-  return -1;
+  access_cache(0);
+  addr_t max_index = 1;
+  while(1){
+    for(addr_t i = 0; i <= max_index; i++){
+      access_cache(i*size);
+    }
+    if(access_cache(0) == FALSE){
+      return max_index;
+    }
+    max_index++;
+  }
 }
 
 /*
    Returns the size (in B) of each block in the cache.
 */
 int get_block_size() {
-  /* YOUR CODE GOES HERE */
-  return -1;
+  access_cache(0);
+  addr_t index = 1;
+  while(access_cache(index) == TRUE){
+    index++;
+  }
+  return index;
 }
 
 int main(void) {
