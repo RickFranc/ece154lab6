@@ -50,7 +50,7 @@ int get_cache_size(int block_size) {
     if(access_cache(0) == FALSE){
       return max_index*block_size;
     }
-    max_index++;
+    max_index*=2;
   }
 }
 
@@ -67,7 +67,7 @@ int get_cache_assoc(int size) {
     if(access_cache(0) == FALSE){
       return max_index;
     }
-    max_index++;
+    max_index*=2;
   }
 }
 
@@ -78,7 +78,7 @@ int get_block_size() {
   access_cache(0);
   addr_t index = 1;
   while(access_cache(index) == TRUE){
-    index++;
+    index*=2;
   }
   return index;
 }
